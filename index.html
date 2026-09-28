@@ -1,0 +1,942 @@
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>IndexConv - Conversor de Tasas</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            min-height: 100vh;
+
+            background:
+                linear-gradient(135deg, #eef2ff, #f8fafc);
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: 25px;
+
+            color: #cecece;
+        }
+
+
+        /* CONTENEDOR PRINCIPAL */
+
+        .app {
+
+            width: 100%;
+            max-width: 560px;
+
+            background: #868282;
+
+            border-radius: 24px;
+
+            box-shadow:
+                0 15px 45px rgba(190, 191, 194, 0.12);
+
+            overflow: hidden;
+        }
+
+
+        /* ENCABEZADO */
+
+        .encabezado {
+
+            background:
+                linear-gradient(135deg, #3e3e3f, #2f53b8);
+
+            color: white;
+
+            padding: 30px 25px;
+
+            text-align: center;
+        }
+
+
+        .icono {
+
+            width: 65px;
+            height: 65px;
+
+            margin: 0 auto 15px;
+
+            background:
+                rgba(255, 255, 255, 0.18);
+
+            border-radius: 18px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-size: 32px;
+        }
+
+
+        .encabezado h1 {
+
+            font-size: 26px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .encabezado p {
+
+            font-size: 14px;
+
+            opacity: 0.9;
+        }
+
+
+        /* CONTENIDO */
+
+        .contenido {
+
+            padding: 28px;
+        }
+
+
+        .campo {
+
+            margin-bottom: 20px;
+        }
+
+
+        label {
+
+            display: block;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            margin-bottom: 8px;
+
+            color: #000000;
+        }
+
+
+        select,
+        input {
+
+            width: 100%;
+
+            height: 50px;
+
+            padding: 0 14px;
+
+            border: 2px solid #e2e8f0;
+
+            border-radius: 12px;
+
+            background: #f8fafc;
+
+            font-size: 16px;
+
+            color: #1e293b;
+
+            outline: none;
+
+            transition: 0.2s;
+        }
+
+
+        select:focus,
+        input:focus {
+
+            border-color: #87d8e2;
+
+            background: rgba(199, 199, 199, 0.774);
+
+            box-shadow:
+                0 0 0 4px rgba(99, 102, 241, 0.10);
+        }
+
+
+        /* INFORMACIÓN */
+
+        .info {
+
+            display: flex;
+
+            gap: 10px;
+
+            background: #f1f5f9;
+
+            border-radius: 12px;
+
+            padding: 13px;
+
+            margin-bottom: 22px;
+
+            font-size: 13px;
+
+            color: #475569;
+        }
+
+
+        .info span {
+
+            font-size: 18px;
+        }
+
+
+        /* BOTÓN */
+
+        button {
+
+            width: 100%;
+
+            height: 54px;
+
+            border: none;
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(135deg, #3e3e3f, #2f53b8);
+
+            color: white;
+
+            font-size: 17px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+
+            box-shadow:
+                0 7px 18px 
+                rgba(29, 30, 31, 0.753);
+        }
+
+
+        button:hover {
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 10px 22px rgba(0, 0, 0, 0.671);
+        }
+
+
+        button:active {
+
+            transform: scale(0.98);
+        }
+
+
+        /* RESULTADO */
+
+        #resultado {
+
+            display: none;
+
+            margin-top: 22px;
+
+            padding: 20px;
+
+            border-radius: 15px;
+
+            text-align: center;
+
+            font-size: 18px;
+
+            font-weight: 700;
+        }
+
+
+        .exito {
+
+            background: #ecfdf5;
+
+            color: #047857;
+
+            border: 2px solid #a7f3d0;
+        }
+
+
+        .error {
+
+            background: #fef2f2;
+
+            color: #b91c1c;
+
+            border: 2px solid #fecaca;
+        }
+
+
+        .oculto {
+
+            display: none !important;
+        }
+        /* TABLET */
+
+        @media (max-width: 600px) {
+
+            body {
+
+                padding: 15px;
+
+                align-items: flex-start;
+            }
+
+
+            .app {
+
+                margin-top: 10px;
+
+                border-radius: 20px;
+            }
+
+
+            .encabezado {
+
+                padding: 25px 20px;
+            }
+
+
+            .encabezado h1 {
+
+                font-size: 23px;
+            }
+
+
+            .contenido {
+
+                padding: 22px 20px;
+            }
+        }
+
+
+        /* CELULARES PEQUEÑOS */
+
+        @media (max-width: 380px) {
+
+            body {
+
+                padding: 8px;
+            }
+
+
+            .app {
+
+                border-radius: 16px;
+            }
+
+
+            .encabezado h1 {
+
+                font-size: 21px;
+            }
+
+
+            .encabezado p {
+
+                font-size: 13px;
+            }
+
+
+            .contenido {
+
+                padding: 18px 15px;
+            }
+
+
+            select,
+            input {
+
+                height: 48px;
+
+                font-size: 15px;
+            }
+
+
+            button {
+
+                height: 52px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div class="app">
+
+
+        <!-- ENCABEZADO -->
+
+        <header class="encabezado">
+
+            <div class="icono">
+                📊
+            </div>
+
+
+            <h1>
+                Convertidor de Tasas de Interés
+            </h1>
+
+
+            <p>
+                Conversor de tasas de interés entre nominal y efectiva, con diferentes períodos y capitalización.
+            </p>
+
+        </header>
+
+
+        <!-- CONTENIDO -->
+
+        <main class="contenido">
+
+
+            <!-- TIPO DE CONVERSIÓN -->
+
+            <div class="campo">
+
+                <label for="convert">
+                    Tipo de conversión
+                </label>
+
+
+                <select
+                    id="convert"
+                    onchange="actualizarCampos()"
+                >
+
+                    <option value="NN">
+                        Nominal → Nominal
+                    </option>
+
+
+                    <option value="EE">
+                        Efectiva → Efectiva
+                    </option>
+
+
+                    <option value="NE">
+                        Nominal → Efectiva
+                    </option>
+
+
+                    <option value="EN">
+                        Efectiva → Nominal
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- TASA -->
+
+            <div class="campo">
+
+                <label for="tasa">
+                    Tasa que tienes (%)
+                </label>
+
+
+                <input
+                    type="number"
+                    id="tasa"
+                    step="0.0001"
+                    placeholder="Ejemplo: 34"
+                >
+
+            </div>
+
+
+            <!-- PERÍODO INICIAL -->
+
+            <div
+                class="campo"
+                id="campo_origen"
+            >
+
+                <label for="per_initial">
+                    Período de la tasa que tienes
+                </label>
+
+
+                <select id="per_initial">
+
+                    <option
+                        value=""
+                        selected
+                        disabled
+                    >
+                        Selecciona el período
+                    </option>
+
+
+                    <option value="30">
+                        Mensual (30 días)
+                    </option>
+
+
+                    <option value="60">
+                        Bimestral (60 días)
+                    </option>
+
+
+                    <option value="90">
+                        Trimestral (90 días)
+                    </option>
+
+
+                    <option value="120">
+                        Cuatrimestral (120 días)
+                    </option>
+
+
+                    <option value="180">
+                        Semestral (180 días)
+                    </option>
+
+
+                    <option value="360">
+                        Anual (360 días)
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- CAPITALIZACIÓN -->
+
+            <div
+                class="campo"
+                id="campo_cap"
+            >
+
+                <label for="capitalizacion">
+                    Capitalización
+                </label>
+
+
+                <select id="capitalizacion">
+
+                    <option
+                        value=""
+                        selected
+                        disabled
+                    >
+                        Selecciona la capitalización
+                    </option>
+
+
+                    <option value="30">
+                        Mensual (30 días)
+                    </option>
+
+
+                    <option value="60">
+                        Bimestral (60 días)
+                    </option>
+
+
+                    <option value="90">
+                        Trimestral (90 días)
+                    </option>
+
+
+                    <option value="120">
+                        Cuatrimestral (120 días)
+                    </option>
+
+
+                    <option value="180">
+                        Semestral (180 días)
+                    </option>
+
+
+                    <option value="360">
+                        Anual (360 días)
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- PERÍODO FINAL -->
+
+            <div
+                class="campo"
+                id="campo_destino"
+            >
+
+                <label for="per_end">
+                    Período que quieres obtener
+                </label>
+
+
+                <select id="per_end">
+
+                    <option value="30">
+                        Mensual (30 días)
+                    </option>
+
+
+                    <option value="60">
+                        Bimestral (60 días)
+                    </option>
+
+
+                    <option value="90">
+                        Trimestral (90 días)
+                    </option>
+
+
+                    <option value="120">
+                        Cuatrimestral (120 días)
+                    </option>
+
+
+                    <option value="180">
+                        Semestral (180 días)
+                    </option>
+
+
+                    <option
+                        value="360"
+                        selected
+                    >
+                        Anual (360 días)
+                    </option>
+
+                </select>
+
+            </div>
+            <!-- BOTÓN -->
+
+            <button onclick="convertir()">
+
+                Convertir tasa
+
+            </button>
+
+
+            <!-- RESULTADO -->
+
+            <div id="resultado"></div>
+
+
+        </main>
+    </div>
+
+
+    <!-- JAVASCRIPT -->
+
+    <script>
+
+
+        // Mostrar u ocultar capitalización
+
+        function actualizarCampos() {
+
+            const convert =
+                document.getElementById("convert").value;
+
+
+            const campoCap =
+                document.getElementById("campo_cap");
+
+
+            if (
+                convert === "NN"
+                ||
+                convert === "EE"
+            ) {
+
+                campoCap.classList.add("oculto");
+
+            } else {
+
+                campoCap.classList.remove("oculto");
+
+            }
+
+        }
+
+
+        // Realizar el cálculo
+
+        function convertir() {
+
+
+            const convert =
+                document.getElementById("convert").value;
+
+
+            const tasa =
+                parseFloat(
+                    document.getElementById("tasa").value
+                );
+
+
+            const per_initial =
+                parseFloat(
+                    document.getElementById("per_initial").value
+                );
+
+
+            const cap =
+                parseFloat(
+                    document.getElementById("capitalizacion").value
+                );
+
+
+            const per_end =
+                parseFloat(
+                    document.getElementById("per_end").value
+                );
+
+
+            const result =
+                document.getElementById("resultado");
+
+
+            /* VALIDAR TASA */
+
+            if (isNaN(tasa)) {
+
+                result.style.display = "block";
+
+                result.className = "error";
+
+                result.textContent =
+                    "⚠️ Escribe una tasa válida.";
+
+                return;
+            }
+
+
+            /* VALIDAR PERÍODO */
+
+            if (isNaN(per_initial)) {
+
+                result.style.display = "block";
+
+                result.className = "error";
+
+                result.textContent =
+                    "⚠️ Selecciona el período de la tasa.";
+
+                return;
+            }
+
+
+            /* VALIDAR CAPITALIZACIÓN */
+
+            if (
+                (
+                    convert === "NE"
+                    ||
+                    convert === "EN"
+                )
+                &&
+                isNaN(cap)
+            ) {
+
+                result.style.display = "block";
+
+                result.className = "error";
+
+                result.textContent =
+                    "⚠️ Selecciona la capitalización.";
+
+                return;
+            }
+
+
+            let res = 0;
+
+
+            const i = tasa / 100;
+
+
+            /* ==============================
+               FÓRMULAS ORIGINALES
+               ============================== */
+
+
+            switch (convert) {
+
+
+                /* NOMINAL → NOMINAL */
+
+                case "NN":
+
+
+                    if (per_end > per_initial) {
+
+                        res =
+                            tasa *
+                            (
+                                per_end /
+                                per_initial
+                            );
+
+                    }
+
+
+                    else if (per_end < per_initial) {
+
+                        res =
+                            tasa /
+                            (
+                                per_initial /
+                                per_end
+                            );
+
+                    }
+
+
+                    else {
+
+                        res = tasa;
+
+                    }
+
+
+                    break;
+
+
+
+                /* EFECTIVA → EFECTIVA */
+
+                case "EE":
+
+
+                    res =
+                        Math.pow(
+                            1 + i,
+                            per_end /
+                            per_initial
+                        ) - 1;
+
+
+                    res =
+                        res * 100;
+
+
+                    break;
+
+
+
+                /* NOMINAL → EFECTIVA */
+
+                case "NE":
+
+
+                    res =
+                        Math.pow(
+                            1 +
+                            i /
+                            (
+                                per_initial /
+                                cap
+                            ),
+                            per_end /
+                            cap
+                        ) - 1;
+
+
+                    res =
+                        res * 100;
+
+
+                    break;
+
+
+
+                /* EFECTIVA → NOMINAL */
+
+                case "EN":
+
+
+                    res =
+                        (
+                            per_end /
+                            cap
+                        )
+                        *
+                        (
+                            Math.pow(
+                                1 + i,
+                                cap /
+                                per_initial
+                            ) - 1
+                        );
+
+
+                    res =
+                        res * 100;
+
+
+                    break;
+
+            }
+
+
+            /* MOSTRAR RESULTADO */
+
+
+            result.style.display = "block";
+
+
+            result.className = "exito";
+
+
+            result.innerHTML =
+
+                "Resultado: " +
+
+                "<strong>" +
+
+                res.toFixed(2) +
+
+                " %</strong>";
+
+        }
+
+
+        // Inicializar
+
+        actualizarCampos();
+
+
+    </script>
+
+
+</body>
+
+</html>
+
